@@ -1,28 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGooglePlusG, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'; // Import biểu tượng
+import { faGooglePlusG, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 const AuthForm = ({ isLogin, setIsLogin }) => {
     const [isActive, setIsActive] = useState(isLogin);
+    const navigate = useNavigate(); // Tạo hàm điều hướng
 
     useEffect(() => {
         setIsActive(isLogin);
     }, [isLogin]);
 
     const handleRegisterClick = () => {
-        setIsActive(true);
-        setIsLogin(false);
+        setIsLogin(false); // Chuyển sang trạng thái đăng ký
+        setIsActive(true); // Kích hoạt form đăng ký
     };
 
     const handleLoginClick = () => {
-        setIsActive(false);
-        setIsLogin(true);
+        setIsLogin(true); // Chuyển sang trạng thái đăng nhập
+        setIsActive(false); // Kích hoạt form đăng nhập
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Thêm logic xác thực đăng nhập tại đây, ví dụ:
+        // if (validLogin) {
+        navigate('/menu'); // Chuyển hướng đến MenuLayout sau khi đăng nhập thành công
+        // }
     };
 
     return (
         <div className={`container ${isActive ? 'active' : ''}`} id="container">
-            <div className="form-container sign-up">
+            <div className="form-container sign-up" style={{ display: isActive ? 'block' : 'none' }}>
                 <form>
                     <h1>Create Account</h1>
                     <div className="social-icons">
@@ -39,7 +49,7 @@ const AuthForm = ({ isLogin, setIsLogin }) => {
                 </form>
             </div>
             <div className="form-container sign-in" style={{ display: isActive ? 'none' : 'block' }}>
-                <form>
+                <form onSubmit={handleSubmit}> {/* Thêm onSubmit */}
                     <h1>Sign In</h1>
                     <div className="social-icons">
                         <a href="#" className="icon"><FontAwesomeIcon icon={faGooglePlusG} /></a>
